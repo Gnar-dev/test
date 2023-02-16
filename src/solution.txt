@@ -1,0 +1,45 @@
+1번 문제 해결
+
+추가하기 버튼을 누를시
+리덕스에서 데이터 State를 업데이트 해달라고 요구하는 dispatch가 없어서 useDispatch 추가해주고 submit 시 dispatch가 
+취해야할 action todos.js 에서 찾아서 넣어줌
++ const dispatch = useDispatch();  
++ dispatch(addTodo({ ...todo, id }));
+
+
+2번 문제 해결 
+
+but 추가되는 것이 아닌 기존의 값에 추가한 내용이 덮어씌어짐;;
+modules에서 todos.js 까보니 기존의 값을 저장해주는 spread operator 가 없어서 추가해줌 +...state.todos
+
+
+3번 문제 해결
+modules /  todos.js 에 딜리트 버튼 눌렀을 시 활성화 되는 case 가 없어서 추가해줌
+기존의 state 유지 + todos의 id의 값을 비교하여 보여주는 filter 이용
+
++ case DELETE_TODO:
+      return {
+        ...state,
+        todos: state.todos.filter((todo) => todo.id !== action.payload),
+      };
+
+
+4번 문제 해결
+id값에 해당하는 내용을 불러오는 dispatch가 없음... 그래서 추가
++  useEffect(() => {
+    dispatch(getTodoByID(id));
+  }, [dispatch, id]);
+
+5번 문제 해결
+id값을 못불러옴
+
+
+
+
+6번 문제 해결
+상태값을 변경해주는 onClick 콜백 함수에 인자전달해주는 todo.id 가 빠져있어서 추가해줌.
++ onToggleStatusTodo(todo.id)
+
+어 근데 안돼서 살펴보니 콜백함수로 받아와야해서
+화살표 함수 추가
+onClick={()=>onToggleStatusTodo(todo.id)}
